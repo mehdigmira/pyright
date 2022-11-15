@@ -17,7 +17,6 @@ from typing import (
     overload,
 )
 
-
 T_ParentClass = TypeVar("T_ParentClass", bound="ParentClass")
 
 P = ParamSpec("P")
@@ -157,6 +156,12 @@ class ParentClass:
         ...
 
     def my_method40(self, a: int, /) -> None:
+        ...
+
+    def my_method41(self, a: int, b: str) -> None:
+        ...
+
+    def my_method42(self, a: int, b: str) -> None:
         ...
 
 
@@ -327,6 +332,14 @@ class ChildClass(ParentClass):
     # This should generate an error because the number of position-only
     # parameters doesn't match.
     def my_method40(self, **kwargs: Any) -> None:
+        ...
+
+    # this should not generate an error because args is of the right type
+    def my_method41(self, a: int, *args: str) -> None:
+        ...
+
+    # this should generate an error because args doesn't have the right type
+    def my_method42(self, a: int, *args: int) -> None:
         ...
 
 
